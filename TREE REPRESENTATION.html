@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BST Visualizer with Traversals</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f2f5;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #1a1a1a;
+            margin-bottom: 20px;
+        }
+
+        .controls {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .traversal-controls {
+            display: flex;
+            gap: 10px;
+            margin: 10px 0;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        input {
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            width: 120px;
+        }
+
+        button {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 4px;
+            background-color: #3b82f6;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        button:hover {
+            background-color: #2563eb;
+        }
+
+        button.delete {
+            background-color: #ef4444;
+        }
+
+        button.delete:hover {
+            background-color: #dc2626;
+        }
+
+        button.traversal {
+            background-color: #8b5cf6;
+        }
+
+        button.traversal:hover {
+            background-color: #7c3aed;
+        }
+
+        .message {
+            text-align: center;
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 4px;
+            display: none;
+        }
+
+        .success {
+            background-color: #86efac;
+            color: #166534;
+        }
+
+        .error {
+            background-color: #fecaca;
+            color: #991b1b;
+        }
+
+        .info {
+            background-color: #bfdbfe;
+            color: #1e40af;
+        }
+
+        .tree-container {
+            width: 100%;
+            height: 500px;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            margin-top: 20px;
+            overflow: auto;
+        }
+
+        .stats {
+            text-align: center;
+            margin: 10px 0;
+            color: #4b5563;
+        }
+
+        .traversal-result {
+            text-align: center;
+            margin: 10px 0;
+            padding: 10px;
+            background-color: #f3f4f6;
+            border-radius: 4px;
+            color: #4b5563;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Binary Search Tree Visualizer</h1>
+        
+        <div class="controls">
+            <input type="number" id="numberInput" placeholder="Enter a number">
+            <button onclick="insertNode()">Insert</button>
+            <button onclick="deleteNode()" class="delete">Delete</button>
+            <button onclick="searchNode()">Search</button>
+            <button onclick="resetTree()">Reset</button>
+        </div>
+
+        <div class="traversal-controls">
+            <button onclick="traverse('inorder')" class="traversal">In-order</button>
+            <button onclick="traverse('preorder')" class="traversal">Pre-order</button>
+            <button onclick="traverse('postorder')" class="traversal">Post-order</button>
+        </div>
+
+        <div id="message" class="message"></div>
+        <div id="traversalResult" class="traversal-result"></div>
+        <div id="stats" class="stats"></div>
+        <div class="tree-container">
+            <svg id="treeCanvas" width="100%" height="100%">
+                <g id="treeGroup" transform="translate(500,40)"></g>
+            </svg>
+        </div>
+    </div>
+
+    <script>
+        class TreeNode {
+            constructor(value) {
+                this.value = value;
+                this.left = null;
+                this.right = null;
+                this.x = 0;
+                this.y = 0;
+                this.isNew = true;
+                this.isVisited = false;
+            }
+        }
+
+        class BST {
+            constructor() {
+                this.root = null;
+                this.nodeCount = 0;
+                this.traversalOrder = [];
+            }
+
+            insert(value) {
+                const newNode = new TreeNode(value);
+                this.nodeCount++;
+
+                if (!this.root) {
+                    this.root = newNode;
+                    return;
+                }
+
+                let current = this.root;
+                while (true) {
+                    if (value < current.value) {
+                        if (!current.left) {
+                            current.left = newNode;
+                            break;
+                        }
+                        current = current.left;
+                    } else {
+                        if (!current.right) {
+                            current.right = newNode;
+                            break;
+                        }
+                        current = current.right;
+                    }
+                }
+            }
+
+            delete(value) {
+                const deleteNode = (node, val) => {
+                    if (!node) return null;
+
+                    if (val < node.value) {
+                        node.left = deleteNode(node.left, val);
+                    } else if (val > node.value) {
+                        node.right = deleteNode(node.right, val);
+                    } else {
+                        this.nodeCount--;
+                        if (!node.left && !node.right) return null;
+                        if (!node.left) return node.right;
+                        if (!node.right) return node.left;
+
+                        let temp = node.right;
+                        while (temp.left) temp = temp.left;
+                        node.value = temp.value;
+                        node.right = deleteNode(node.right, temp.value);
+                    }
+                    return node;
+                };
+
+                this.root = deleteNode(this.root, value);
+            }
+
+            search(value) {
+                let current = this.root;
+                while (current) {
+                    if (value === current.value) return true;
+                    current = value < current.value ? current.left : current.right;
+                }
+                return false;
+            }
+
+            clearVisited(node = this.root) {
+                if (!node) return;
+                node.isVisited = false;
+                this.clearVisited(node.left);
+                this.clearVisited(node.right);
+            }
+
+            inorderTraversal(node = this.root) {
+                if (!node) return;
+                this.inorderTraversal(node.left);
+                this.traversalOrder.push(node);
+                this.inorderTraversal(node.right);
+            }
+
+            preorderTraversal(node = this.root) {
+                if (!node) return;
+                this.traversalOrder.push(node);
+                this.preorderTraversal(node.left);
+                this.preorderTraversal(node.right);
+            }
+
+            postorderTraversal(node = this.root) {
+                if (!node) return;
+                this.postorderTraversal(node.left);
+                this.postorderTraversal(node.right);
+                this.traversalOrder.push(node);
+            }
+
+            reset() {
+                this.root = null;
+                this.nodeCount = 0;
+                this.traversalOrder = [];
+            }
+        }
+
+        const bst = new BST();
+        let currentTraversalIndex = 0;
+        let traversalInterval;
+
+        function updateTree() {
+            const treeGroup = document.getElementById('treeGroup');
+            treeGroup.innerHTML = '';
+            
+            if (!bst.root) return;
+
+            function drawNode(node, x, y, level = 1) {
+                if (!node) return;
+
+                if (node.left) {
+                    const childX = x - (200 / level);
+                    const childY = y + 60;
+                    treeGroup.innerHTML += `
+                        <line 
+                            x1="${x}" y1="${y}"
+                            x2="${childX}" y2="${childY}"
+                            stroke="#94a3b8"
+                            stroke-width="2"
+                        />
+                    `;
+                }
+
+                if (node.right) {
+                    const childX = x + (200 / level);
+                    const childY = y + 60;
+                    treeGroup.innerHTML += `
+                        <line
+                            x1="${x}" y1="${y}"
+                            x2="${childX}" y2="${childY}"
+                            stroke="#94a3b8"
+                            stroke-width="2"
+                        />
+                    `;
+                }
+
+                let color = '#ffffff';
+                if (node.isVisited) color = '#93c5fd';
+                else if (node.isNew) color = '#86efac';
+
+                treeGroup.innerHTML += `
+                    <circle
+                        cx="${x}" cy="${y}" r="20"
+                        fill="${color}"
+                        stroke="#475569"
+                        stroke-width="2"
+                    />
+                    <text
+                        x="${x}" y="${y}"
+                        text-anchor="middle"
+                        dominant-baseline="middle"
+                        font-size="14"
+                        font-weight="bold"
+                    >${node.value}</text>
+                `;
+
+                if (node.left) {
+                    drawNode(node.left, x - (200 / level), y + 60, level + 1);
+                }
+                if (node.right) {
+                    drawNode(node.right, x + (200 / level), y + 60, level + 1);
+                }
+            }
+
+            drawNode(bst.root, 0, 0);
+            updateStats();
+        }
+
+        function showMessage(text, type) {
+            const message = document.getElementById('message');
+            message.textContent = text;
+            message.className = `message ${type}`;
+            message.style.display = 'block';
+            setTimeout(() => {
+                message.style.display = 'none';
+            }, 3000);
+        }
+
+        function updateStats() {
+            const stats = document.getElementById('stats');
+            stats.textContent = `Total nodes: ${bst.nodeCount}`;
+        }
+
+        function showTraversalResult(order) {
+            const result = document.getElementById('traversalResult');
+            result.textContent = `${order} traversal: ${bst.traversalOrder.map(node => node.value).join(' → ')}`;
+            result.style.display = 'block';
+        }
+
+        function insertNode() {
+            const input = document.getElementById('numberInput');
+            const value = parseInt(input.value);
+            
+            if (isNaN(value)) {
+                showMessage('Please enter a valid number', 'error');
+                return;
+            }
+
+            bst.insert(value);
+            input.value = '';
+            updateTree();
+            showMessage(`Inserted ${value}`, 'success');
+        }
+
+        function deleteNode() {
+            const input = document.getElementById('numberInput');
+            const value = parseInt(input.value);
+            
+            if (isNaN(value)) {
+                showMessage('Please enter a valid number', 'error');
+                return;
+            }
+
+            bst.delete(value);
+            input.value = '';
+            updateTree();
+            showMessage(`Deleted ${value}`, 'success');
+        }
+
+        function searchNode() {
+            const input = document.getElementById('numberInput');
+            const value = parseInt(input.value);
+            
+            if (isNaN(value)) {
+                showMessage('Please enter a valid number', 'error');
+                return;
+            }
+
+            const found = bst.search(value);
+            showMessage(found ? `Found ${value}!` : `${value} not found`, found ? 'success' : 'error');
+        }
+
+        function resetTree() {
+            clearInterval(traversalInterval);
+            bst.reset();
+            updateTree();
+            document.getElementById('traversalResult').style.display = 'none';
+            showMessage('Tree reset', 'success');
+        }
+
+        function traverse(type) {
+            clearInterval(traversalInterval);
+            bst.clearVisited();
+            bst.traversalOrder = [];
+            
+            switch(type) {
+                case 'inorder':
+                    bst.inorderTraversal();
+                    showTraversalResult('In-order');
+                    break;
+                case 'preorder':
+                    bst.preorderTraversal();
+                    showTraversalResult('Pre-order');
+                    break;
+                case 'postorder':
+                    bst.postorderTraversal();
+                    showTraversalResult('Post-order');
+                    break;
+            }
+
+            currentTraversalIndex = 0;
+            traversalInterval = setInterval(() => {
+                if (currentTraversalIndex < bst.traversalOrder.length) {
+                    bst.traversalOrder[currentTraversalIndex].isVisited = true;
+                    updateTree();
+                    currentTraversalIndex++;
+                } else {
+                    clearInterval(traversalInterval);
+                    setTimeout(() => {
+                        bst.clearVisited();
+                        updateTree();
+                    }, 1000);
+                }
+            }, 1000);
+        }
+
+        document.getElementById('numberInput').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                insertNode();
+            }
+        });
+
+        updateTree();
+    </script>
+</body>
+</html>
