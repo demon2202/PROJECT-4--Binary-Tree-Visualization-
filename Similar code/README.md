@@ -1,116 +1,90 @@
-🌳🔍 Binary Search Tree & AVL Tree Visualizer 👀
+### **1️⃣ Project Title & Description**
+- **`# 🌳🔍 Binary Search Tree & AVL Tree 👀`**
+  - This is the **title** of your project.
+  - Uses **🌳 (tree) & 🔍 (search)** emojis to represent BST & AVL trees.
 
-Welcome to the Binary Search Tree & AVL Tree Visualizer! This is a web application built using React that allows users to visualize Binary Search Trees (BST) and AVL Trees interactively.
+- **Short Description:** 
+  - "This is a ⚛️-based 🕸️📱 that lets 🧑‍💻 see 🏗️ Binary Search Trees (BST) & AVL Trees."
+  - Translation: "This is a **React-based Web App** that allows developers to **visualize** BST and AVL trees."
 
-⭐ Features
+---
 
-This application offers the following features:
+### **2️⃣ Features**
+- Lists the main functionalities:
+  - **🌳 BST & AVL** 🎨 → It supports both **Binary Search Trees & AVL Trees**.
+  - **➕ Insert & ➖ Delete** 🌱 → Users can **add & remove nodes**.
+  - **🤖 Auto-Balance** for AVL 🌳 → AVL trees **self-balance** automatically.
+  - **🔄 Traversals (🔢, 🔼, 🔽, 📏)** → Supports **Inorder, Preorder, Postorder, and Level Order** traversals.
+  - **🖼️ Graphical View** 🎭 → Uses **visualization** for trees.
+  - **🎭 Cool UI** 🕺 → It has a **modern user interface**.
 
-🌳 Visual Representation of BST & AVL Trees
+---
 
-➕ Insertion of nodes into the tree
+### **3️⃣ Tech Stack**
+- **Lists the tools used to build the project:**
+  - ⚛️ **React** 🎨 → Frontend framework for building UI.
+  - 📜 **JavaScript (ES6+)** 🔢 → Programming language used.
+  - 🖼️ **SVG** 🏗️ → Used for **graphical representation** of trees.
+  - 🎨 **CSS** 🖌️ → For designing the UI.
 
-🗑️ Deletion of nodes from the tree
+---
 
-🤖 Automatic Balancing in AVL trees
+### **4️⃣ Installation & Setup**
+- **Step-by-step guide** on how to install and run the project:
 
-🔄 Tree Traversals:
+1. **Clone the repository**:
+   ```bash
+   git clone https://github.com/your-repo/tree-visualizer.git
+   cd tree-visualizer
+   ```
+2. **Install dependencies**:
+   ```bash
+   npm install
+   ```
+3. **Start the project**:
+   ```bash
+   npm start
+   ```
+4. **Open the app in the browser**:
+   ```
+   http://localhost:3000
+   ```
 
-🟢 Inorder Traversal (Left, Root, Right)
+---
 
-🔵 Preorder Traversal (Root, Left, Right)
+### **5️⃣ How to Use**
+- 📝 **Type ➕ ➕ ➕** → Allows **adding nodes**.
+- 🗑️ **Type ➖ ➖ ➖** → Allows **removing nodes**.
+- 🔄 **Click Traversals 📏** → Lets users **view different tree traversals**.
+- 🔁 **Swap BST/AVL 🌳** → Users can **switch between BST and AVL tree**.
 
-🔴 Postorder Traversal (Left, Right, Root)
+---
 
-🟡 Level Order Traversal (Breadth-First Search)
+### **6️⃣ Folder Structure**
+- **Explains the organization of files & folders:**
+  ```
+  📁 tree-visualizer
+  ├── 📁 src
+  │   ├── 📁 📦  # UI 🎭
+  │   ├── 📁 🔢  # 🌳 🤖
+  │   ├── 📜 App.js 🎨
+  │   ├── 📜 index.js 📢
+  │   └── 🎨 styles.css 🎭
+  ├── 📜 package.json 📦
+  └── 📜 README.md 📄
+  ```
+  - `src/` → Contains source code.
+  - `App.js` → Main component of the React app.
+  - `index.js` → Renders the app in the browser.
+  - `styles.css` → Styles for UI.
+  - `package.json` → Lists dependencies.
 
-🎭 Graphical Representation of trees using SVG
+---
 
-🖥️ User-Friendly Interface with interactive controls
+### **7️⃣ Future Improvements**
+- Lists upcoming features:
+  - 🔴⚫ **Red-Black 🌳** → Adding support for **Red-Black Trees**.
+  - 📽️ **Step-by-step** 🏗️ → Animated visualization of tree operations.
+  - ✨ **Better UI/UX** 🎭 → Improving design & user experience.
 
-🛠️ Technologies Used
-
-This project is built using:
-
-⚛️ React – Frontend framework for interactive UI
-
-📜 JavaScript (ES6+) – Core programming language
-
-🎨 CSS – Styling for the user interface
-
-🖼️ SVG – Used for rendering tree structures
-
-📥 Installation & Setup
-
-Follow these steps to install and run the project on your local machine:
-
-1️⃣ Clone the Repository
-
-git clone https://github.com/your-repo/tree-visualizer.git
-cd tree-visualizer
-
-2️⃣ Install Dependencies
-
-npm install
-
-3️⃣ Run the Application
-
-npm start
-
-4️⃣ Open in Browser
-
-http://localhost:3000
-
-🎮 How to Use
-
-This application provides an intuitive interface for interacting with BST & AVL trees:
-
-Insert Nodes ➕
-
-Enter a number in the input field and click Insert to add a node.
-
-Delete Nodes 🗑️
-
-Enter a number and click Delete to remove a node.
-
-Visualize Traversals 🔄
-
-Click on any traversal button (Inorder, Preorder, Postorder, Level Order) to see the tree traversal in action.
-
-Switch Between BST & AVL 🔁
-
-Toggle between Binary Search Tree (BST) and AVL Tree using the mode switch.
-
-📂 Project Folder Structure
-
-📁 tree-visualizer
-├── 📁 src
-│   ├── 📁 components   # UI Components
-│   ├── 📁 algorithms   # Tree Logic (BST & AVL)
-│   ├── 📜 App.js       # Main React Component
-│   ├── 📜 index.js     # Entry Point
-│   ├── 🎨 styles.css   # Styling
-├── 📜 package.json     # Dependencies
-└── 📜 README.md        # Project Documentation
-
-🔮 Future Enhancements
-
-Here are some planned improvements for the application:
-
-🔴⚫ Red-Black Tree Support
-
-📽️ Step-by-Step Execution of Traversals
-
-✨ Better UI/UX with Animations
-
-📊 Statistics on Tree Operations (Time Complexity Analysis)
-
-🤝 Contribution
-
-We welcome contributions! If you’d like to improve this project, follow these steps:
-
-Fork the repository 🔄
-
-Make your changes 🛠️
-
-Submit a Pull Request ✅
+---
